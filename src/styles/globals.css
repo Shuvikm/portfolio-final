@@ -1,0 +1,339 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   globals.css — Base reset, typography, root layout, element defaults
+   Visual direction: ALERAK-style brutal/premium portfolio (Shuvik M)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ── Design Tokens ── */
+@import './variables.css';
+
+/* ── Animations ── */
+@import './animations.css';
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Box model reset
+   ───────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Root elements
+   ───────────────────────────────────────────────────────────────────────────── */
+html {
+  min-width: 100%;
+  min-height: 100%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-width: 100%;
+  min-height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  body { overflow-x: hidden; }
+}
+
+#root {
+  min-width: 100%;
+  min-height: 100%;
+  isolation: isolate;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Custom cursor — body class gates native cursor suppression.
+   Only applied when CursorEffect is active (fine pointer + hover capable).
+   DO NOT use * { cursor: none } globally.
+   ───────────────────────────────────────────────────────────────────────────── */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ALERAK-style circle cursor — owned exclusively by CursorEffect.jsx
+   Transitions handle the magnet state expansion.
+   ───────────────────────────────────────────────────────────────────────────── */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  will-change: transform;
+  transition:
+    width 280ms var(--ease-out),
+    height 280ms var(--ease-out),
+    margin 280ms var(--ease-out),
+    background 280ms var(--ease-out),
+    border 280ms var(--ease-out);
+}
+
+/* Magnet state — expanded transparent ring with inner dot */
+.cursor-dot.is-magnet {
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  background: transparent;
+  border: 1px solid var(--color-accent);
+}
+
+.cursor-dot.is-magnet::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transition: width 200ms ease, height 200ms ease;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HeroWord — outlined hero character system
+   Hover: fill lime, stroke disappears, slight lift
+   ───────────────────────────────────────────────────────────────────────────── */
+.hero-char {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-fg);
+  text-stroke: 2px var(--color-fg);
+  transition:
+    color 140ms ease,
+    -webkit-text-stroke-color 140ms ease,
+    transform 140ms ease;
+  cursor: default;
+  user-select: none;
+}
+
+.hero-char:hover {
+  color: var(--color-accent);
+  -webkit-text-stroke-color: transparent;
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-char:hover { transform: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Glitch logo — SHUVIK in navigation
+   Glitch only on hover — not permanent
+   ───────────────────────────────────────────────────────────────────────────── */
+.glitch-logo {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--color-fg);
+  cursor: pointer;
+  user-select: none;
+}
+
+.glitch-logo::before,
+.glitch-logo::after {
+  content: 'SHUVIK';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 80ms;
+}
+
+.glitch-logo:hover::before {
+  color: var(--color-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 38%, 0 38%);
+  transform: translate(-2px, 0);
+  opacity: 1;
+  animation: glitchTop 400ms steps(3) forwards;
+}
+
+.glitch-logo:hover::after {
+  color: var(--color-secondary);
+  clip-path: polygon(0 62%, 100% 62%, 100% 100%, 0 100%);
+  transform: translate(2px, 0);
+  opacity: 1;
+  animation: glitchBot 400ms steps(3) forwards;
+}
+
+@keyframes glitchTop {
+  0%  { transform: translate(-2px,  0px); }
+  33% { transform: translate(-4px, -1px); }
+  66% { transform: translate( 2px,  1px); }
+  100%{ transform: translate( 0px,  0px); opacity: 0; }
+}
+
+@keyframes glitchBot {
+  0%  { transform: translate( 2px,  0px); }
+  33% { transform: translate( 4px,  1px); }
+  66% { transform: translate(-2px, -1px); }
+  100%{ transform: translate( 0px,  0px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-logo::before,
+  .glitch-logo::after { display: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Running tape (VelocityTape) — pure CSS animation, no JS
+   ───────────────────────────────────────────────────────────────────────────── */
+.tape-track {
+  display: flex;
+  width: max-content;
+  animation: tapeScroll 22s linear infinite;
+}
+
+@keyframes tapeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape-track { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ScrollVelocityEffect — CSS variable skew, applied to approved wrappers only
+   ───────────────────────────────────────────────────────────────────────────── */
+.scroll-skew {
+  transform: skewY(var(--skew-x, 0deg));
+  transition: transform 100ms linear;
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Noise overlay — static, no animation, no JS
+   ───────────────────────────────────────────────────────────────────────────── */
+.noise-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-noise);
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  will-change: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Typography defaults
+   ───────────────────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--color-fg);
+}
+
+p { max-width: 68ch; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Scrollbar styling
+   ───────────────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Selection
+   ───────────────────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Section layout utility
+   ───────────────────────────────────────────────────────────────────────────── */
+.section {
+  padding: var(--page-padding-y) var(--page-padding-x);
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Utility classes
+   ───────────────────────────────────────────────────────────────────────────── */
+.text-accent    { color: var(--color-accent); }
+.text-muted     { color: var(--color-muted); }
+.text-fg        { color: var(--color-fg); }
+.text-secondary { color: var(--color-secondary); }
+.border-top     { border-top: 1px solid var(--color-border); }
+.border-bottom  { border-bottom: 1px solid var(--color-border); }
+
+/* Visually hidden (accessible hide) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}

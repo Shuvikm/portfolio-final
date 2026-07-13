@@ -1,0 +1,63 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   animations.css — Reusable CSS keyframes and utility animation classes
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Tape scroll (VelocityTape) ── */
+@keyframes tapeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Gentle fade-in ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Slide up reveal ── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Cursor blink ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Noise shimmer (optional, disabled by default) ── */
+@keyframes noiseShimmer {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2px, 1px); }
+  50%  { transform: translate(1px, -2px); }
+  75%  { transform: translate(-1px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── Utility classes ── */
+.anim-fade-in {
+  animation: fadeIn var(--transition-base) var(--ease-out) both;
+}
+
+.anim-slide-up {
+  animation: slideUp var(--transition-slow) var(--ease-out) both;
+}
+
+/* ── Respect reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

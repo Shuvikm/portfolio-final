@@ -1,0 +1,50 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   variables.css — Design Tokens (ALERAK-style direction, Shuvik M portfolio)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Colour Palette — ALERAK direction ── */
+  --color-bg:         #030303;   /* near-black background */
+  --color-surface:    #0d0d0d;   /* elevated surface */
+  --color-surface-2:  #141414;   /* card / panel surface */
+  --color-fg:         #e0e0e0;   /* foreground */
+  --color-muted:      #555555;   /* secondary / de-emphasised */
+  --color-border:     #1e1e1e;   /* subtle rule lines */
+
+  --color-accent:     #ccff00;   /* neon lime primary accent */
+  --color-secondary:  #ff00ff;   /* neon magenta secondary */
+  --color-danger:     #ff3333;   /* error / destructive */
+
+  /* ── Typography ── */
+  --font-display: 'Syncopate', sans-serif;
+  --font-body:    'Space Grotesk', sans-serif;
+
+  /* ── Easing ── */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-snap:   cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  /* ── Z-Index Architecture (strict ownership) ──
+     background (-10) → content (1) → noise (30) → nav (40) → cursor (50) → modal (200) */
+  --z-background: -10;
+  --z-content:      1;
+  --z-noise:       30;
+  --z-nav:         40;
+  --z-cursor:      50;
+  --z-modal:      200;
+
+  /* ── Layout ── */
+  --container-width: 1400px;
+  --page-padding-x:  clamp(1.25rem, 5vw, 5rem);
+  --page-padding-y:  clamp(4rem, 8vw, 8rem);
+
+  /* ── Borders ── */
+  --radius-sm:  2px;
+  --radius-md:  4px;
+  --radius-lg: 12px;
+
+  /* ── Transitions ── */
+  --transition-fast:   150ms var(--ease-out);
+  --transition-base:   300ms var(--ease-out);
+  --transition-slow:   500ms var(--ease-out);
+}
