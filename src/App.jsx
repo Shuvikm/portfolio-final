@@ -24,40 +24,38 @@
 //   The PDF tab is a native browser document — no portfolio overlays possible.
 // ─────────────────────────────────────────────────────────────────────────────
 import './styles/globals.css';
+import SpiderCursor     from './components/SpiderCursor';
+import Preloader        from './components/Preloader';
 
-import CursorEffect     from './components/CursorEffect';
 import Navigation       from './components/Navigation';
 
-import Hero        from './sections/Hero';
-import VelocityTape from './components/VelocityTape';
-import Identity    from './sections/Identity';
-import System      from './sections/System';
-import Work        from './sections/Work';
-import Credentials from './sections/Credentials';
-import Impact      from './sections/Impact';
-import Contact     from './sections/Contact';
+import Hero           from './sections/Hero';
+import Identity       from './sections/Identity';
+import AnimatedBanner from './components/AnimatedBanner';
+import System         from './sections/System';
+import Work           from './sections/Work';
+import Credentials    from './sections/Credentials';
+import Impact         from './sections/Impact';
+import WheelGallery   from './components/WheelGallery';
+import Contact        from './sections/Contact';
 
 export default function App() {
   return (
     <>
-      {/* ── Layer: Cursor (Lightweight circle cursor) ── */}
-      <CursorEffect />
-
+      <Preloader />
+      <SpiderCursor />
       {/* ── Layer: Navigation ── */}
       <Navigation />
 
-      {/* ── Layer: Noise texture (pure CSS) ── */}
-      <div className="noise-layer" aria-hidden="true" />
-
-      {/* ── Layer: Page content ── */}
       <main id="main-content">
         <Hero />
-        <VelocityTape />
         <Identity />
         <System />
+        <AnimatedBanner />
         <Work />
         <Credentials />
         <Impact />
+        <WheelGallery />
         <Contact />
 
         <footer

@@ -1,3 +1,5 @@
+import { useState, useRef, useCallback, useEffect } from 'react';
+
 // ProjectCard.jsx — Sample 2: full-width project chapter
 //
 // Each project occupies ~80-90% of the desktop viewport width.
@@ -11,9 +13,35 @@
 
 export default function ProjectCard({ project }) {
   const { number, title, date, classification, buildYear, description, highlight, stack, liveUrl, githubUrl } = project;
+  
+  const cardRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    // Calculate mouse position relative to the center of the card
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Max tilt is 4 degrees for a subtle premium feel
+    const rotateX = ((y - centerY) / centerY) * -4;
+    const rotateY = ((x - centerX) / centerX) * 4;
+    
+    setTilt({ x: rotateX, y: rotateY });
+  }, []);
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   return (
     <article
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       style={{
         // Full-width chapter: ~85vw, bounded
         width:         'clamp(320px, 85vw, 1100px)',
@@ -23,8 +51,10 @@ export default function ProjectCard({ project }) {
         border:        '1px solid var(--color-border)',
         background:    'var(--color-surface)',
         position:      'relative',
-        overflow:      'hidden',
-        // NO root transform
+        // Tilt animation
+        transformStyle: 'preserve-3d',
+        transform:     `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition:    tilt.x === 0 && tilt.y === 0 ? 'transform 400ms ease-out' : 'none',
       }}
       aria-label={title}
     >
@@ -37,6 +67,7 @@ export default function ProjectCard({ project }) {
         borderBottom:   '1px solid var(--color-border)',
         gap:            '1rem',
         flexWrap:       'wrap',
+        transform:      'translateZ(20px)', // pop out slightly in 3D
       }}>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <span style={{
@@ -74,6 +105,7 @@ export default function ProjectCard({ project }) {
         display:   'flex',
         padding:   'clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
         gap:       'clamp(1.5rem, 4vw, 3rem)',
+        transform: 'translateZ(40px)', // pop out more
       }}>
 
         {/* Left: number + title */}

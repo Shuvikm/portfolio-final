@@ -8,6 +8,7 @@ import { contact, socials, resume } from '../data/portfolioData';
 import SectionLabel    from '../components/SectionLabel';
 import MagneticElement from '../components/MagneticElement';
 import ResumeButton    from '../components/ResumeButton';
+import LocalTime       from '../components/LocalTime';
 
 const SOCIAL_KEYS = [
   { key: 'linkedin', label: 'LINKEDIN' },
@@ -123,6 +124,9 @@ export default function Contact() {
                 {contact.phone}
               </a>
             )}
+            <div style={{ marginTop: '1rem' }}>
+              <LocalTime />
+            </div>
           </div>
 
           {/* Social + resume */}

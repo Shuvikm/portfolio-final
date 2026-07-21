@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--page-padding-y) var(--page-padding-x);
+  background-color: var(--color-bg);
+  overflow: hidden;
+}
+
+.text {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 10rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  width: 100%;
+  
+  color: rgba(224, 224, 224, 0.05); /* Dimmed text before reveal */
+  background: linear-gradient(to right, var(--color-fg), var(--color-fg)) no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: 0%;
+  transition: background-size 0.5s var(--ease-out);
+
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+
+  animation-name: reveal;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-timeline: view();
+  animation-range: entry 100% cover 50%;
+  cursor: default;
+}
+
+.text:first-child {
+  border-top: 1px solid var(--color-border);
+}
+
+@keyframes reveal {
+  to {
+    background-size: 100%;
+  }
+}
+
+.spanHover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  
+  clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%);
+  transform-origin: center;
+  transition: clip-path 0.4s var(--ease-out);
+
+  display: flex;
+  align-items: center;
+  /* Same padding/margins as the parent text to align properly */
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+.text:hover > .spanHover {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}

@@ -6,7 +6,6 @@
 
 import { profile, education } from '../data/portfolioData';
 import SectionLabel from '../components/SectionLabel';
-import ScrollVelocityEffect from '../components/ScrollVelocityEffect';
 
 export default function Identity() {
   const [college, school] = education;
@@ -20,28 +19,24 @@ export default function Identity() {
     >
       <div style={{ padding: '0 var(--page-padding-x)' }}>
         <SectionLabel>— 02 / ABOUT</SectionLabel>
-
-        {/* ── Primary editorial statement (scroll-skew applied) ── */}
-        <ScrollVelocityEffect>
-          <h2
-            className="scroll-skew"
-            style={{
-              fontFamily:    'var(--font-display)',
-              fontSize:      'clamp(1.75rem, 5.5vw, 6rem)',
-              lineHeight:    1.0,
-              letterSpacing: '-0.02em',
-              marginTop:     'clamp(1.5rem, 3vw, 2.5rem)',
-              marginBottom:  'clamp(2rem, 4vw, 3.5rem)',
-            }}
-          >
-            I BUILD{' '}
-            <span style={{ color: 'var(--color-accent)' }}>PRACTICAL</span>{' '}
-            DIGITAL SYSTEMS<br />
-            THAT TURN IDEAS INTO{' '}
-            <span style={{ color: 'var(--color-fg)' }}>WORKING</span>{' '}
-            EXPERIENCES.
-          </h2>
-        </ScrollVelocityEffect>
+        {/* ── Primary editorial statement ── */}
+        <h2
+          style={{
+            fontFamily:    'var(--font-display)',
+            fontSize:      'clamp(1.75rem, 5.5vw, 6rem)',
+            lineHeight:    1.0,
+            letterSpacing: '-0.02em',
+            marginTop:     'clamp(1.5rem, 3vw, 2.5rem)',
+            marginBottom:  'clamp(2rem, 4vw, 3.5rem)',
+          }}
+        >
+          I BUILD{' '}
+          <span style={{ color: 'var(--color-accent)' }}>PRACTICAL</span>{' '}
+          DIGITAL SYSTEMS<br />
+          THAT TURN IDEAS INTO{' '}
+          <span style={{ color: 'var(--color-fg)' }}>WORKING</span>{' '}
+          EXPERIENCES.
+        </h2>
 
         {/* ── Supporting statements ── */}
         <div style={{
@@ -135,23 +130,6 @@ export default function Identity() {
 
             </div>
 
-            <div style={{ height:'1px', background:'var(--color-border)' }} aria-hidden="true" />
-
-            {/* School */}
-            <div>
-              <span style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.55rem',
-                letterSpacing: '0.25em', textTransform: 'uppercase',
-                color: 'var(--color-muted)', fontWeight: 600, display: 'block',
-                marginBottom: '0.5rem',
-              }}>
-                {school.duration}
-              </span>
-              <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(0.75rem, 1.5vw, 0.95rem)', color:'var(--color-fg)', lineHeight:1.3 }}>
-                HIGHER SECONDARY<br />BHARATHI VIDYA BHAVAN
-              </p>
-
-            </div>
           </div>
         </div>
       </div>

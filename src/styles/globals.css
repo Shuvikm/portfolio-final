@@ -337,3 +337,11 @@ img, video, svg {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* Custom Neon Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-fg); }
+
+@keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }

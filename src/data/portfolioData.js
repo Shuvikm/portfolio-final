@@ -21,7 +21,7 @@ export const profile = {
   bio:
     "I'M A SOFTWARE DEVELOPER FOCUSED ON BUILDING PRACTICAL DIGITAL SYSTEMS.",
   bioDetail:
-    'I enjoy solving technical problems, learning new technologies, and building applications through structured, iterative development. My work spans full-stack development, database systems, machine learning projects, and collaborative Agile development.',
+    'As a dedicated and highly motivated professional, I am continuously seeking to enhance my skills and contribute effectively in a dynamic, collaborative environment. I pride myself on my attention to detail, strong problem-solving abilities and commitment to excellence. I am passionate about leveraging my strengths to drive success and achieve outstanding results.',
 
   areasOfInterest: [
     'Database Management Systems',
@@ -70,7 +70,7 @@ export const skillCategories = [
   { category: 'Machine Learning', items: ['Python', 'Scikit-learn', 'XGBoost'] },
 ];
 
-export const tools = ['Figma', 'CapCut', 'Canva', 'GitHub'];
+export const tools = ['Figma', 'Canva', 'Github', 'Postman'];
 
 // ── Projects ─────────────────────────────────────────────────────────────────
 // HorizontalScrollSection owns the track transform.
@@ -79,7 +79,7 @@ export const projects = [
   {
     id:             'ai-mentoring-platform',
     number:         '01',
-    title:          'AI-Powered Mentoring Platform',
+    title:          'AI-Powered Study Mentor',
     date:           'September 2025',
     classification: 'AI PLATFORM',
     buildYear:      '2025',
@@ -128,20 +128,20 @@ export const projects = [
     featured:  false,
   },
   {
-    id:             'rescue-connect',
+    id:             'currency-converter',
     number:         '04',
-    title:          'Rescue Connect',
+    title:          'Currency Converter',
     date:           'October 2025',
-    classification: 'COORDINATION SYSTEM',
+    classification: 'MOBILE APP',
     buildYear:      '2025',
     description:
-      'Developed a coordination platform to improve communication during rescue operations.',
+      'Developed a currency converter using Flutter and Dart for dynamic USD-to-INR conversion.',
     highlight:
-      'Followed Agile methodology with sprint planning and iterative development.',
-    stack:     ['React', 'MongoDB', 'Agile'],
+      'Implemented state management and user input handling for real-time UI updates.',
+    stack:     ['Flutter', 'Dart', 'Material Design'],
     image:     null,
     liveUrl:   null,
-    githubUrl: 'https://github.com/Shuvikm/rescue-connect',
+    githubUrl: null,
     featured:  false,
   },
 ];
@@ -157,7 +157,7 @@ export const certifications = [
     id:          'cert-mongodb',
     title:       'MongoDB Certified Associate Developer',
     issuer:      'MongoDB',
-    date:        'May 2025',
+    date:        'March 2025',
     proofImages: [
       {
         src:   '/assets/images/certs/mongodb-certificate.pdf',
@@ -219,10 +219,10 @@ export const achievements = [
   {
     id:           'ach-03',
     number:       '03',
-    type:         'LEADERSHIP / PARTICIPATION',
-    title:        'Smart India Hackathon 2024',
-    organization: null,
-    description:  'Participated as Team Lead',
+    type:         'SPORTS',
+    title:        'WINNER - 2nd place in Centies Handball',
+    organization: 'Centies',
+    description:  null,
     date:         'January 2024',
     proofImage:   null,
     link:         null,
@@ -230,28 +230,13 @@ export const achievements = [
   {
     id:           'ach-04',
     number:       '04',
-    type:         'LEADERSHIP / PARTICIPATION',
-    title:        'Smart India Hackathon 2025',
-    organization: null,
-    description:  'Participated as Team Lead',
+    type:         'SPORTS',
+    title:        'WINNER - 4th place in Handball Interzone',
+    organization: 'State Level',
+    description:  null,
     date:         'April 2025',
     proofImage:   null,
     link:         null,
-  },
-  {
-    id:           'ach-05',
-    number:       '05',
-    type:         'COMMUNITY SERVICE',
-    title:        'Blood Donation — Certificate of Appreciation',
-    organization: 'Lions Club of Erode Supreme Charitable Trust',
-    description:  'Voluntary blood donation at Kongu Engineering College.',
-    date:         'March 2025',
-    proofImage:   {
-      src:   '/assets/images/achievements/blood-donation.pdf',
-      alt:   'Certificate of Appreciation for blood donation, issued to Shuvik M',
-      label: 'Certificate',
-    },
-    link: null,
   },
 ];
 

@@ -125,20 +125,25 @@ export default function System() {
           display:    'flex',
           alignItems: 'center',
           gap:        'clamp(1rem, 2vw, 2rem)',
-          marginTop:  'clamp(1.5rem, 3vw, 2.5rem)',
+          marginTop:  'clamp(2rem, 4vw, 4rem)',
           flexWrap:   'wrap',
         }}>
-          <span style={{ fontFamily:'var(--font-body)', fontSize:'0.55rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--color-border)' }}>
+          <span style={{ fontFamily:'var(--font-body)', fontSize:'0.85rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--color-accent)' }}>
             TOOLS —
           </span>
           {(tools || []).map((tool) => (
             <span key={tool} style={{
-              fontFamily:    'var(--font-body)',
-              fontSize:      '0.65rem',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
+              fontFamily:    'var(--font-display)',
+              fontSize:      'clamp(1.5rem, 4vw, 4rem)',
+              letterSpacing: '-0.015em',
+              lineHeight:     1,
               color:         'var(--color-muted)',
-            }}>
+              transition:    'color 200ms',
+              cursor:        'default'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-fg)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-muted)'; }}
+            >
               {tool}
             </span>
           ))}
