@@ -150,28 +150,31 @@ export default function Navigation() {
                   <button
                     onClick={() => scrollTo('#contact')}
                     style={{
-                      fontFamily:    'var(--font-body)',
-                      fontSize:      '0.62rem',
-                      fontWeight:     600,
-                      letterSpacing: '0.2em',
+                      fontFamily:    'var(--font-display)',
+                      fontSize:      '0.85rem',
+                      fontWeight:     800,
+                      letterSpacing: '0.1em',
                       textTransform: 'uppercase',
                       color:         'var(--color-bg)',
                       background:    'var(--color-accent)',
                       border:        'none',
-                      padding:       '0.55rem 1.1rem',
+                      padding:       '0.6rem 1.4rem',
                       cursor:        'pointer',
-                      transition:    'background 150ms ease, color 150ms ease',
+                      transition:    'transform 150ms ease, box-shadow 150ms ease',
                       whiteSpace:    'nowrap',
+                      boxShadow:     '0 0 15px rgba(204, 255, 0, 0.4)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--color-fg)';
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                      e.currentTarget.style.boxShadow = '0 0 25px rgba(204, 255, 0, 0.8)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'var(--color-accent)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 0 15px rgba(204, 255, 0, 0.4)';
                     }}
                     aria-label="Navigate to contact section"
                   >
-                    LET'S TALK
+                    HIRE ME
                   </button>
                 </MagneticElement>
 
