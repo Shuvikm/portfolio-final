@@ -88,7 +88,7 @@ export const projects = [
     highlight:
       'Implemented automatic quiz generation from PDFs to support student self-assessment.',
     stack:     ['React', 'Node.js', 'MongoDB', 'Python'],
-    image:     null,
+    image:     '/assets/projects/ai.jpeg',
     liveUrl:   null,
     githubUrl: 'https://github.com/Shuvikm/ai-mentoring-platform',
     featured:  true,
@@ -105,7 +105,7 @@ export const projects = [
     highlight:
       'Enabled image uploads to improve lost-item identification.',
     stack:     ['React', 'Node.js', 'MongoDB', 'Express.js', 'JWT'],
-    image:     null,
+    image:     '/assets/projects/lost.jpeg',
     liveUrl:   null,
     githubUrl: 'https://github.com/Shuvikm/lost-found-web-application',
     featured:  true,
@@ -122,24 +122,24 @@ export const projects = [
     highlight:
       'Trained and evaluated Logistic Regression, Random Forest, and XGBoost models.',
     stack:     ['Python', 'Scikit-learn', 'XGBoost'],
-    image:     null,
+    image:     '/assets/projects/flight.jpeg',
     liveUrl:   null,
     githubUrl: 'https://github.com/Shuvikm/flight-delay-prediction',
     featured:  false,
   },
   {
-    id:             'currency-converter',
+    id:             'rescue-and-connect',
     number:         '04',
-    title:          'Currency Converter',
-    date:           'October 2025',
-    classification: 'MOBILE APP',
-    buildYear:      '2025',
+    title:          'Rescue and Connect',
+    date:           '2024',
+    classification: 'FULL STACK',
+    buildYear:      '2024',
     description:
-      'Developed a currency converter using Flutter and Dart for dynamic USD-to-INR conversion.',
+      'A disaster management platform to coordinate rescue operations and connect affected individuals.',
     highlight:
-      'Implemented state management and user input handling for real-time UI updates.',
-    stack:     ['Flutter', 'Dart', 'Material Design'],
-    image:     null,
+      'Built a robust and scalable architecture to handle real-time crisis data.',
+    stack:     ['React', 'Node.js', 'Express.js', 'MongoDB'],
+    image:     '/assets/projects/rescue.jpeg',
     liveUrl:   null,
     githubUrl: null,
     featured:  false,
@@ -167,7 +167,7 @@ export const certifications = [
     ],
   },
   {
-    id:          'cert-java',
+    id:          'cert-java-se',
     title:       'Java SE 17 Developer',
     issuer:      'Oracle',
     date:        'February 2026',
@@ -176,12 +176,20 @@ export const certifications = [
         src:   '/assets/images/certs/oracle-score-report.pdf',
         alt:   'Oracle Java SE 17 Examination Score Report for Shuvik M',
         label: 'Score Report',
-      },
+      }
+    ],
+  },
+  {
+    id:          'cert-oracle-pro',
+    title:       'Oracle Certified Professional',
+    issuer:      'Oracle',
+    date:        'February 2026',
+    proofImages: [
       {
         src:   '/assets/images/certs/oracle-certificate.pdf',
         alt:   'Oracle Certified Professional certificate for Shuvik M',
         label: 'Certificate',
-      },
+      }
     ],
   },
 ];

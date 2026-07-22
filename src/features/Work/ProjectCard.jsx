@@ -68,6 +68,7 @@ export default function ProjectCard({ project }) {
         gap:            '1rem',
         flexWrap:       'wrap',
         transform:      'translateZ(20px)', // pop out slightly in 3D
+        flexShrink:     0,
       }}>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <span style={{
@@ -114,13 +115,13 @@ export default function ProjectCard({ project }) {
           flexDirection: 'column',
           justifyContent: 'space-between',
           flexShrink:    0,
-          minWidth:      'min(40%, 400px)',
-          maxWidth:      '45%',
+          minWidth:      'min(25%, 250px)',
+          maxWidth:      '30%',
         }}>
           {/* Oversized number */}
           <span style={{
             fontFamily:    'var(--font-display)',
-            fontSize:      'clamp(5rem, 12vw, 12rem)',
+            fontSize:      'clamp(4rem, 10vw, 10rem)',
             fontWeight:     700,
             lineHeight:     1,
             color:         'var(--color-border)',
@@ -133,7 +134,7 @@ export default function ProjectCard({ project }) {
 
           <h3 style={{
             fontFamily:    'var(--font-display)',
-            fontSize:      'clamp(1.1rem, 3vw, 2.75rem)',
+            fontSize:      'clamp(1.1rem, 2.5vw, 2.5rem)',
             lineHeight:    1.05,
             letterSpacing: '-0.02em',
             color:         'var(--color-fg)',
@@ -144,14 +145,37 @@ export default function ProjectCard({ project }) {
           </h3>
         </div>
 
+        {/* Middle: Project Thumbnail */}
+        {project.image && (
+          <div style={{
+            flex: 1,
+            height: '100%',
+            minHeight: '200px',
+            border: '1px solid var(--color-border)',
+            overflow: 'hidden',
+            borderRadius: '4px',
+          }}>
+            <img 
+              src={project.image} 
+              alt={title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </div>
+        )}
+
         {/* Right: description + highlight + stack + links */}
         <div style={{
-          flex:          1,
           display:       'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
           gap:           '1rem',
           paddingTop:    'clamp(1rem, 2vw, 1.5rem)',
+          minWidth:      'min(30%, 350px)',
+          maxWidth:      '35%',
         }}>
 
           <p style={{
