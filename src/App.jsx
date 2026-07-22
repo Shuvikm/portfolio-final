@@ -41,6 +41,7 @@ import WheelGallery   from './components/WheelGallery';
 import GithubActivity from './features/GithubActivity/GithubActivity';
 import Contact        from './features/Contact/Contact';
 import HackerTerminal from './components/HackerTerminal';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -58,6 +59,7 @@ export default function App() {
   return (
     <>
       <HackerTerminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
+      <Analytics />
       <Preloader />
       <SpiderCursor />
       {/* ── Layer: Navigation ── */}
