@@ -4,9 +4,9 @@
 // Blood donation: description shown WITHOUT blood group (privacy).
 // Proof images open in MediaLightbox rendered outside the transformed track hierarchy.
 
-import { achievements } from '../data/portfolioData';
-import AchievementCard         from '../components/AchievementCard';
-import HorizontalScrollSection from '../components/HorizontalScrollSection';
+import { achievements } from '../../data/portfolioData';
+import AchievementCard         from './AchievementCard';
+import HorizontalScrollSection from '../../components/HorizontalScrollSection';
 
 export default function Impact() {
   return (

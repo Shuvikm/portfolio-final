@@ -4,8 +4,8 @@
 // Large statement typography, not a resume objective.
 // Education as technical metadata block.
 
-import { profile, education } from '../data/portfolioData';
-import SectionLabel from '../components/SectionLabel';
+import { profile, education } from '../../data/portfolioData';
+import SectionLabel from '../../components/SectionLabel';
 
 export default function Identity() {
   const [college, school] = education;

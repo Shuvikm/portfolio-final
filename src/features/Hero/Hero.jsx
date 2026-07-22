@@ -6,10 +6,10 @@
 // VelocityTape renders below this section (in App.jsx).
 
 import { useState, useEffect, useRef } from 'react';
-import { profile }      from '../data/portfolioData';
-import HeroWord         from '../components/HeroWord';
-import MagneticElement  from '../components/MagneticElement';
-import ResumeButton     from '../components/ResumeButton';
+import { profile }      from '../../data/portfolioData';
+import HeroWord         from './HeroWord';
+import MagneticElement  from '../../components/MagneticElement';
+import ResumeButton     from '../../components/ResumeButton';
 
 const IDENTITY_INTERVAL = 3000;
 

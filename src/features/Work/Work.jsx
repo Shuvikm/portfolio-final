@@ -3,9 +3,9 @@
 // Projects as the primary portfolio experience.
 // Pinned horizontal scroll. Data from portfolioData.js only.
 
-import { projects } from '../data/portfolioData';
-import ProjectCard             from '../components/ProjectCard';
-import HorizontalScrollSection from '../components/HorizontalScrollSection';
+import { projects } from '../../data/portfolioData';
+import ProjectCard             from './ProjectCard';
+import HorizontalScrollSection from '../../components/HorizontalScrollSection';
 
 export default function Work() {
   return (

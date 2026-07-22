@@ -8,9 +8,9 @@
 // z-index: var(--z-modal) which must exceed var(--z-cursor).
 
 import { useState } from 'react';
-import { certifications } from '../data/portfolioData';
-import SectionLabel   from '../components/SectionLabel';
-import MediaLightbox  from '../components/MediaLightbox';
+import { certifications } from '../../data/portfolioData';
+import SectionLabel   from '../../components/SectionLabel';
+import MediaLightbox  from '../../components/MediaLightbox';
 
 export default function Credentials() {
   const [lightboxImages, setLightboxImages] = useState([]);

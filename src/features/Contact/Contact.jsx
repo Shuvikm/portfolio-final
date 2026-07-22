@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { contact, socials } from '../data/portfolioData';
-import SectionLabel    from '../components/SectionLabel';
-import MagneticElement from '../components/MagneticElement';
+import { contact, socials } from '../../data/portfolioData';
+import SectionLabel    from '../../components/SectionLabel';
+import MagneticElement from '../../components/MagneticElement';
 import styles from './Contact.module.css';
 
 // SVG Icons for footer
@@ -43,7 +43,7 @@ export default function Contact() {
           Accept: "application/json"
         },
         body: JSON.stringify({
-          access_key: "YOUR_ACCESS_KEY", // <--- UPDATE THIS LATER
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY || "YOUR_ACCESS_KEY", // <--- Falls back to string if env is missing
           name: formData.name,
           email: formData.email,
           message: formData.message

@@ -23,26 +23,41 @@
 //   The portfolio WebGL canvas stays in this tab.
 //   The PDF tab is a native browser document — no portfolio overlays possible.
 // ─────────────────────────────────────────────────────────────────────────────
+import { useState, useEffect } from 'react';
 import './styles/globals.css';
 import SpiderCursor     from './components/SpiderCursor';
 import Preloader        from './components/Preloader';
 
 import Navigation       from './components/Navigation';
 
-import Hero           from './sections/Hero';
-import Identity       from './sections/Identity';
+import Hero           from './features/Hero/Hero';
+import Identity       from './features/Identity/Identity';
 import AnimatedBanner from './components/AnimatedBanner';
-import System         from './sections/System';
-import Work           from './sections/Work';
-import Credentials    from './sections/Credentials';
-import Impact         from './sections/Impact';
+import System         from './features/System/System';
+import Work           from './features/Work/Work';
+import Credentials    from './features/Credentials/Credentials';
+import Impact         from './features/Impact/Impact';
 import WheelGallery   from './components/WheelGallery';
-import GithubActivity from './sections/GithubActivity';
-import Contact        from './sections/Contact';
+import GithubActivity from './features/GithubActivity/GithubActivity';
+import Contact        from './features/Contact/Contact';
+import HackerTerminal from './components/HackerTerminal';
 
 export default function App() {
+  const [terminalOpen, setTerminalOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === '`' || e.key === '~') {
+        e.preventDefault();
+        setTerminalOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
   return (
     <>
+      <HackerTerminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
       <Preloader />
       <SpiderCursor />
       {/* ── Layer: Navigation ── */}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
-import SectionLabel from '../components/SectionLabel';
+import SectionLabel from '../../components/SectionLabel';
 
 export default function GithubActivity() {
   const [repos, setRepos] = useState([]);

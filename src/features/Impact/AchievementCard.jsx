@@ -8,7 +8,7 @@
 //   All motion must be on an inner wrapper (.cardInner).
 
 import { useState } from 'react';
-import MediaLightbox from './MediaLightbox';
+import MediaLightbox from '../../components/MediaLightbox';
 
 export default function AchievementCard({ achievement }) {
   const { number, type, title, organization, description, date, proofImage } = achievement;

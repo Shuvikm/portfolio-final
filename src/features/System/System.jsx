@@ -5,9 +5,9 @@
 // No skill bars. No progress rings. No generic cards.
 // CSS hover only — no RAF, no state per territory.
 
-import { tools } from '../data/portfolioData';
-import SectionLabel from '../components/SectionLabel';
-import MagneticElement from '../components/MagneticElement';
+import { tools } from '../../data/portfolioData';
+import SectionLabel from '../../components/SectionLabel';
+import MagneticElement from '../../components/MagneticElement';
 
 const TERRITORIES = [
   { id: '01', label: 'INTERFACE',    items: ['React', 'HTML', 'CSS', 'JavaScript'],         accent: true  },
