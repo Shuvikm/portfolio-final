@@ -85,7 +85,7 @@ export default function Hero() {
           alignItems:    'flex-end',
           gap:           '0.35rem',
         }}>
-          {['CSE / 2023 — 2027', 'ERODE / INDIA', 'FULL STACK / ML'].map((l) => (
+          {['CSE / 2023 — 2027', 'FULL STACK / ML'].map((l) => (
             <span key={l} style={{
               fontFamily:    'var(--font-body)',
               fontSize:      '0.55rem',
@@ -157,40 +157,18 @@ export default function Hero() {
             </h1>
           </MagneticElement>
 
-          {/* Square Photo (Right side of name) */}
-          <div style={{
-            width: 'clamp(140px, 22vw, 260px)',
-            height: 'clamp(140px, 22vw, 260px)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
-            border: '2px solid var(--color-accent)',
-            boxShadow: '0 16px 32px rgba(0,0,0,0.5)',
-            flexShrink: 0,
-            marginTop: 'auto',
-            marginBottom: 'clamp(1rem, 3vw, 2rem)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'var(--color-bg)',
-          }}>
-            <img
-              src="/assets/images/shuvik-photo.jpg"
-              alt="Shuvik M portrait"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </div>
         </div>
 
         {/* Role label */}
         <p style={{
           fontFamily:    'var(--font-body)',
-          fontSize:      'clamp(0.6rem, 1.2vw, 0.75rem)',
-          letterSpacing: '0.3em',
+          fontSize:      'clamp(1rem, 3vw, 1.5rem)',
+          letterSpacing: '0.1em',
           textTransform: 'uppercase',
           color:         'var(--color-muted)',
-          marginTop:     'clamp(1rem, 2vw, 1.5rem)',
+          marginTop:     '0.5rem',
         }}>
-          {profile.role}
+          FULL STACK DEVELOPER
         </p>
 
         {/* Divider */}

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARK-OS // Tactical Attack Map HD</title>
+    
+    <!-- Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lexend:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- High-Precision Geo Libraries -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+
+    <style>
+      :root {
+          --neon-blue: #38bdf8; 
+          --neon-glow: rgba(56, 189, 248, 0.3);
+          --neon-red: #ef4444;
+          --neon-amber: #f59e0b;
+          --neon-green: #10b981;
+          --dark-bg: #030712;
+          --card-bg: rgba(6, 11, 22, 0.45);
+          --card-border: rgba(56, 189, 248, 0.18);
+      }
+
+      * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          user-select: none;
+      }
+
+      html, body {
+          width: 100vw;
+          height: 100vh;
+          background-color: var(--dark-bg);
+          color: #ffffff;
+          font-family: 'Lexend', 'Inter', sans-serif;
+          overflow: hidden;
+          position: relative;
+      }
+
+      /* Base Map Layer Container */
+      #map-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 1;
+          background: radial-gradient(circle at center, rgba(14, 23, 42, 0.6) 0%, rgba(3, 7, 18, 0.98) 100%);
+      }
+
+      #world-svg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          pointer-events: none;
+      }
+
+      /* Detailed World Map Styling */
+      .country {
+          fill: rgba(14, 116, 144, 0.12);
+          stroke: rgba(56, 189, 248, 0.32);
+          stroke-width: 0.6;
+          filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.2));
+      }
+
+      .graticule {
+          fill: none;
+          stroke: rgba(56, 189, 248, 0.05);
+          stroke-width: 0.5;
+          stroke-dasharray: 2 4;
+      }
+
+      /* Interactive Attack Canvas Layer */
+      #map-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 2;
+          pointer-events: none;
+      }
+
+      /* Subtle Cyber Grid Overlay */
+      .grid-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 3;
+          pointer-events: none;
+          background-image: 
+              linear-gradient(rgba(56, 189, 248, 0.015) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(56, 189, 248, 0.015) 1px, transparent 1px);
+          background-size: 40px 40px;
+      }
+
+      /* Compact Top Telemetry Header */
+      header {
+          position: absolute;
+          top: 18px; 
+          left: 24px; 
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+      }
+
+      header h1 {
+          font-size: 1.1rem; 
+          color: var(--neon-blue);
+          text-shadow: 0 0 10px var(--neon-glow);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          letter-spacing: 2px;
+      }
+
+      .pulse-dot {
+          width: 7px;
+          height: 7px;
+          background-color: var(--neon-red);
+          border-radius: 50%;
+          box-shadow: 0 0 8px var(--neon-red);
+          animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+          0% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.3); }
+          100% { opacity: 0.3; transform: scale(0.8); }
+      }
+
+      .hud-telemetry {
+          font-size: 0.6rem;
+          color: #64748b;
+          letter-spacing: 1.5px;
+          display: flex;
+          gap: 10px;
+          font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* Ultra-Slim Glassmorphism Floating Sidebar Panels */
+      .hud-panel {
+          position: absolute;
+          top: 70px;
+          bottom: 30px;
+          z-index: 5;
+          width: 210px; 
+          background: var(--card-bg);
+          border: 1px solid var(--card-border);
+          border-top: 2px solid var(--neon-blue);
+          border-radius: 10px;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+      }
+
+      /* Make panels scale down dynamically for the iframe frame */
+      @media (max-width: 800px) {
+          .hud-panel {
+              transform: scale(0.55);
+              transform-origin: top;
+          }
+          header {
+              transform: scale(0.6);
+              transform-origin: top left;
+          }
+          .hud-left { left: 5px; }
+          .hud-right { right: 5px; }
+      }
+      @media (max-width: 500px) {
+          .hud-panel {
+              transform: scale(0.45);
+              transform-origin: top;
+          }
+      }
+
+      .hud-left { left: 24px; }
+      .hud-right { right: 24px; }
+
+      .panel-title {
+          font-size: 0.65rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          color: var(--neon-blue);
+          border-bottom: 1px dashed rgba(56, 189, 248, 0.2);
+          padding-bottom: 6px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .stat-box {
+          background: rgba(3, 7, 18, 0.4);
+          border: 1px solid rgba(56, 189, 248, 0.08);
+          border-radius: 6px;
+          padding: 6px 8px;
+      }
+
+      .stat-label {
+          font-size: 0.55rem;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
+      }
+
+      .stat-value {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 1.1rem;
+          font-weight: bold;
+          color: #ffffff;
+      }
+
+      /* Compact Threat Breakdown */
+      .threat-bar-container {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+      }
+
+      .threat-bar-item {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          font-size: 0.58rem;
+      }
+
+      .threat-bar-label {
+          display: flex;
+          justify-content: space-between;
+          color: #94a3b8;
+          font-family: 'JetBrains Mono', monospace;
+      }
+
+      .progress-track {
+          height: 3px;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 2px;
+          overflow: hidden;
+      }
+
+      .progress-fill {
+          height: 100%;
+          border-radius: 2px;
+      }
+
+      /* Streamlined Event Log Feed */
+      .feed-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          overflow-y: hidden;
+          max-height: 100%;
+          font-family: 'JetBrains Mono', monospace;
+      }
+
+      .feed-item {
+          background: rgba(3, 7, 18, 0.4);
+          border-left: 2px solid var(--neon-blue);
+          padding: 6px 8px;
+          border-radius: 0 4px 4px 0;
+          font-size: 0.58rem;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          animation: fadeIn 0.25s ease-out;
+      }
+
+      .feed-item.high { border-left-color: var(--neon-red); }
+      .feed-item.medium { border-left-color: var(--neon-amber); }
+      .feed-item.low { border-left-color: var(--neon-blue); }
+
+      .feed-header {
+          display: flex;
+          justify-content: space-between;
+          color: #64748b;
+          font-size: 0.55rem;
+      }
+
+      .feed-type.high { color: var(--neon-red); }
+      .feed-type.medium { color: var(--neon-amber); }
+      .feed-type.low { color: var(--neon-blue); }
+
+      .feed-route {
+          color: #cbd5e1;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-4px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      .instructions {
+          position: absolute;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 0.58rem;
+          color: #475569;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          z-index: 10;
+          pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Grid Texture -->
+    <div class="grid-overlay"></div>
+
+    <!-- Map Container with Vector World Map SVG & Canvas Layer -->
+    <div id="map-container">
+        <svg id="world-svg"></svg>
+        <canvas id="map-canvas"></canvas>
+    </div>
+
+    <!-- Top Left HUD Header -->
+    <header>
+        <h1>
+            <span class="pulse-dot"></span>
+            STARK-OS // THREAT MATRIX
+        </h1>
+        <div class="hud-telemetry">
+            <span>NODE // ATLANTIC HIGHLANDS, NJ</span>
+            <span>|</span>
+            <span id="hud-clock">00:00:00 UTC</span>
+        </div>
+    </header>
+
+    <!-- Ultra-Slim Left Panel -->
+    <div class="hud-panel hud-left">
+        <div class="panel-title">
+            Telemetry
+            <span style="font-size: 0.55rem; color: var(--neon-green);">● LIVE</span>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-label">Event Stream</div>
+            <div class="stat-value" id="val-eps">1,482 <span style="font-size: 0.6rem; color: #64748b;">EPS</span></div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-label">Mitigation</div>
+            <div class="stat-value" id="val-mitigations" style="color: var(--neon-green);">99.4%</div>
+        </div>
+
+        <div class="panel-title" style="margin-top: 4px;">Attack Vectors</div>
+        <div class="threat-bar-container">
+            <div class="threat-bar-item">
+                <div class="threat-bar-label">
+                    <span>SYN Flood / DDoS</span>
+                    <span>42%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 42%; background: var(--neon-red);"></div>
+                </div>
+            </div>
+
+            <div class="threat-bar-item">
+                <div class="threat-bar-label">
+                    <span>SSH / RDP Brute</span>
+                    <span>28%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 28%; background: var(--neon-amber);"></div>
+                </div>
+            </div>
+
+            <div class="threat-bar-item">
+                <div class="threat-bar-label">
+                    <span>SQLi / Exploit</span>
+                    <span>18%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 18%; background: var(--neon-blue);"></div>
+                </div>
+            </div>
+
+            <div class="threat-bar-item">
+                <div class="threat-bar-label">
+                    <span>DNS Amplification</span>
+                    <span>12%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 12%; background: #a855f7;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ultra-Slim Right Panel -->
+    <div class="hud-panel hud-right">
+        <div class="panel-title">
+            Event Log
+            <span id="event-counter" style="color: #64748b; font-size: 0.55rem;">0 RECS</span>
+        </div>
+        <div class="feed-list" id="feed-list">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Bottom Center ScreenSaver Bar -->
+    <div class="instructions">
+        [DOUBLE-CLICK] Fullscreen Mode &nbsp;|&nbsp; High Precision Vector Tracking
+    </div>
+
+    <script>
+      // Global Geolocation Hub Targets (Latitude / Longitude)
+      const LOCATIONS = [
+          { name: "Ashburn, USA", lat: 39.0437, lon: -77.4875 },
+          { name: "New York, USA", lat: 40.7128, lon: -74.0060 },
+          { name: "San Jose, USA", lat: 37.3382, lon: -121.8863 },
+          { name: "London, UK", lat: 51.5074, lon: -0.1278 },
+          { name: "Frankfurt, DE", lat: 50.1109, lon: 8.6821 },
+          { name: "Amsterdam, NL", lat: 52.3676, lon: 4.9041 },
+          { name: "Tokyo, JP", lat: 35.6762, lon: 139.6503 },
+          { name: "Singapore, SG", lat: 1.3521, lon: 103.8198 },
+          { name: "Sydney, AU", lat: -33.8688, lon: 151.2093 },
+          { name: "Sao Paulo, BR", lat: -23.5505, lon: -46.6333 },
+          { name: "Johannesburg, ZA", lat: -26.2041, lon: 28.0473 },
+          { name: "Mumbai, IN", lat: 19.0760, lon: 72.8777 },
+          { name: "Beijing, CN", lat: 39.9042, lon: 116.4074 },
+          { name: "Seoul, KR", lat: 37.5665, lon: 126.9780 },
+          { name: "Stockholm, SE", lat: 59.3293, lon: 18.0686 }
+      ];
+
+      const ATTACK_TYPES = [
+          { name: "DDoS SYN Flood", severity: "high", color: "#ef4444" },
+          { name: "SSH Brute Force", severity: "medium", color: "#f59e0b" },
+          { name: "HTTP Exploit", severity: "high", color: "#ef4444" },
+          { name: "SQL Injection", severity: "low", color: "#38bdf8" },
+          { name: "DNS Amplification", severity: "medium", color: "#a855f7" },
+          { name: "Port Scan Sweep", severity: "low", color: "#38bdf8" }
+      ];
+
+      const canvas = document.getElementById('map-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let activeArcs = [];
+      let impactRings = [];
+      let totalEventCount = 0;
+
+      // D3 Geo Projection for Accurate Mapping
+      let projection;
+
+      function initMap() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          
+          canvas.width = width;
+          canvas.height = height;
+
+          const svg = d3.select("#world-svg")
+              .attr("width", width)
+              .attr("height", height);
+
+          svg.selectAll("*").remove(); // Clear previous renders
+
+          // Precision Equirectangular Geo Projection
+          projection = d3.geoEquirectangular()
+              .scale(width / (2 * Math.PI))
+              .translate([width / 2, height / 1.9]);
+
+          const path = d3.geoPath().projection(projection);
+
+          // Render Tactical Grid Lines
+          const graticule = d3.geoGraticule().step([30, 30]);
+          svg.append("path")
+              .datum(graticule)
+              .attr("class", "graticule")
+              .attr("d", path);
+
+          // Load High-Precision 110m TopoJSON World Atlas
+          d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(worldData => {
+              const countries = topojson.feature(worldData, worldData.objects.countries);
+
+              svg.append("g")
+                  .selectAll("path")
+                  .data(countries.features)
+                  .enter()
+                  .append("path")
+                  .attr("class", "country")
+                  .attr("d", path);
+          });
+      }
+
+      // Convert Geo Lat/Lon directly to screen coordinates using D3
+      function getScreenCoords(lat, lon) {
+          if (!projection) return { x: 0, y: 0 };
+          const coords = projection([lon, lat]);
+          return { x: coords[0], y: coords[1] };
+      }
+
+      function spawnAttack() {
+          if (!projection) return;
+
+          const srcIdx = Math.floor(Math.random() * LOCATIONS.length);
+          let dstIdx = Math.floor(Math.random() * LOCATIONS.length);
+          while (dstIdx === srcIdx) dstIdx = Math.floor(Math.random() * LOCATIONS.length);
+
+          const source = LOCATIONS[srcIdx];
+          const target = LOCATIONS[dstIdx];
+          const type = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
+
+          const start = getScreenCoords(source.lat, source.lon);
+          const end = getScreenCoords(target.lat, target.lon);
+
+          // Calculate Smooth Curve Arc
+          const midX = (start.x + end.x) / 2;
+          const midY = (start.y + end.y) / 2 - Math.min(180, Math.hypot(end.x - start.x, end.y - start.y) * 0.35);
+
+          activeArcs.push({
+              start,
+              end,
+              control: { x: midX, y: midY },
+              progress: 0,
+              speed: 0.008 + Math.random() * 0.012,
+              color: type.color,
+              targetCoords: end
+          });
+
+          addFeedEntry(source, target, type);
+      }
+
+      function addFeedEntry(src, dst, type) {
+          const feedList = document.getElementById('feed-list');
+          totalEventCount++;
+          document.getElementById('event-counter').textContent = `${totalEventCount.toLocaleString()} RECS`;
+
+          const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+          const item = document.createElement('div');
+          item.className = `feed-item ${type.severity}`;
+          item.innerHTML = `
+              <div class="feed-header">
+                  <span class="feed-type ${type.severity}">${type.name}</span>
+                  <span>${timeStr}</span>
+              </div>
+              <div class="feed-route">
+                  <span>${src.name.split(',')[0]}</span>
+                  <span style="color: #64748b;">➔</span>
+                  <span>${dst.name.split(',')[0]}</span>
+              </div>
+          `;
+
+          feedList.prepend(item);
+          if (feedList.children.length > 12) {
+              feedList.removeChild(feedList.lastChild);
+          }
+      }
+
+      function drawWorldNodes() {
+          LOCATIONS.forEach(loc => {
+              const pt = getScreenCoords(loc.lat, loc.lon);
+              
+              // Core Dot
+              ctx.fillStyle = "rgba(56, 189, 248, 0.85)";
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y, 2, 0, Math.PI * 2);
+              ctx.fill();
+
+              // Node Pulsing Ring
+              ctx.strokeStyle = "rgba(56, 189, 248, 0.3)";
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2);
+              ctx.stroke();
+          });
+      }
+
+      function animate() {
+          ctx.clearRect(0, 0, width, height);
+
+          drawWorldNodes();
+
+          // Render & Update Bezier Arcs
+          for (let i = activeArcs.length - 1; i >= 0; i--) {
+              const arc = activeArcs[i];
+              arc.progress += arc.speed;
+
+              if (arc.progress >= 1) {
+                  impactRings.push({
+                      x: arc.targetCoords.x,
+                      y: arc.targetCoords.y,
+                      radius: 2,
+                      color: arc.color,
+                      alpha: 1
+                  });
+                  activeArcs.splice(i, 1);
+                  continue;
+              }
+
+              // Arc Trail
+              ctx.beginPath();
+              ctx.strokeStyle = arc.color;
+              ctx.lineWidth = 1.2;
+              ctx.globalAlpha = 0.5;
+              
+              const t = arc.progress;
+              const currX = (1 - t) * (1 - t) * arc.start.x + 2 * (1 - t) * t * arc.control.x + t * t * arc.end.x;
+              const currY = (1 - t) * (1 - t) * arc.start.y + 2 * (1 - t) * t * arc.control.y + t * t * arc.end.y;
+
+              ctx.moveTo(arc.start.x, arc.start.y);
+              ctx.quadraticCurveTo(arc.control.x, arc.control.y, currX, currY);
+              ctx.stroke();
+
+              // Glowing Pulse Head
+              ctx.globalAlpha = 1.0;
+              ctx.fillStyle = "#ffffff";
+              ctx.beginPath();
+              ctx.arc(currX, currY, 2.2, 0, Math.PI * 2);
+              ctx.fill();
+          }
+
+          // Impact Blast Rings
+          for (let i = impactRings.length - 1; i >= 0; i--) {
+              const ring = impactRings[i];
+              ring.radius += 0.6;
+              ring.alpha -= 0.025;
+
+              if (ring.alpha <= 0) {
+                  impactRings.splice(i, 1);
+                  continue;
+              }
+
+              ctx.beginPath();
+              ctx.strokeStyle = ring.color;
+              ctx.globalAlpha = ring.alpha;
+              ctx.lineWidth = 1.2;
+              ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
+              ctx.stroke();
+          }
+
+          ctx.globalAlpha = 1.0;
+          requestAnimationFrame(animate);
+      }
+
+      // HUD Clock & Event Rate Interval
+      setInterval(() => {
+          const clockEl = document.getElementById('hud-clock');
+          if (clockEl) clockEl.textContent = `${new Date().toISOString().substring(11, 19)} UTC`;
+      }, 1000);
+
+      setInterval(() => {
+          const eps = 1350 + Math.floor(Math.random() * 300);
+          document.getElementById('val-eps').innerHTML = `${eps.toLocaleString()} <span style="font-size: 0.6rem; color: #64748b;">EPS</span>`;
+      }, 2000);
+
+      setInterval(() => {
+          if (Math.random() > 0.2) spawnAttack();
+      }, 380);
+
+      window.addEventListener('resize', () => {
+          initMap();
+      });
+
+      window.addEventListener('dblclick', () => {
+          if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+              document.exitFullscreen().catch(() => {});
+          }
+      });
+
+      // Launch
+      initMap();
+      animate();
+    </script>
+  </body>
+</html>
