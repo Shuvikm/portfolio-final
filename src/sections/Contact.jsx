@@ -133,6 +133,14 @@ export default function Contact() {
                   {status === 'SENDING' ? 'TRANSMITTING...' : status === 'SENT' ? 'TICKET SENT' : 'SEND TICKET'}
                 </button>
               </MagneticElement>
+
+              {socials?.linkedin && (
+                <MagneticElement strength={0.1}>
+                  <a href={socials.linkedin} target="_blank" rel="noreferrer" className={styles.linkedinBtn}>
+                    <LinkedinIcon /> MESSAGE ON LINKEDIN
+                  </a>
+                </MagneticElement>
+              )}
             </form>
           </div>
 

@@ -37,6 +37,7 @@ import Work           from './sections/Work';
 import Credentials    from './sections/Credentials';
 import Impact         from './sections/Impact';
 import WheelGallery   from './components/WheelGallery';
+import GithubActivity from './sections/GithubActivity';
 import Contact        from './sections/Contact';
 
 export default function App() {
@@ -56,6 +57,7 @@ export default function App() {
         <Credentials />
         <Impact />
         <WheelGallery />
+        <GithubActivity />
         <Contact />
 
         <footer

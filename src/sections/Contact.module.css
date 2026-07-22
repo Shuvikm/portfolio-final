@@ -105,6 +105,32 @@
   cursor: not-allowed;
 }
 
+.linkedinBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--color-fg);
+  color: var(--color-fg);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.linkedinBtn:hover {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
 .viewportContainer {
   border: 1px solid var(--color-border);
   height: 600px;
