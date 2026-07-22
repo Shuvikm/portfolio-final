@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { contact, socials } from '../../data/portfolioData';
 import SectionLabel    from '../../components/SectionLabel';
 import MagneticElement from '../../components/MagneticElement';
-import InteractiveMap  from '../../components/InteractiveMap';
 import styles from './Contact.module.css';
 
 // SVG Icons for footer
@@ -156,7 +155,17 @@ export default function Contact() {
             </div>
             
             <div className={styles.viewportBody}>
-              <InteractiveMap />
+              <img 
+                src="/assets/gallery/8.jpg" 
+                alt="Shuvik Portrait" 
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  filter: 'grayscale(100%) contrast(1.2)',
+                }}
+              />
             </div>
           </div>
         </div>
