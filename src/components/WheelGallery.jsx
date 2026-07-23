@@ -30,17 +30,13 @@ export default function WheelGallery() {
     });
   }, []);
 
-  useEffect(() => {
-    const handleWheel = (e) => {
-      const now = Date.now();
-      if (now - lastScroll < 600) return;
-      setLastScroll(now);
-      move(e.deltaY > 0 ? 1 : -1);
-    };
-    
-    // Attach listener to window (or just this component, but window mimics the codepen)
-    window.addEventListener('wheel', handleWheel);
-    return () => window.removeEventListener('wheel', handleWheel);
+  // Removed global window wheel listener
+
+  const handleWheel = useCallback((e) => {
+    const now = Date.now();
+    if (now - lastScroll < 600) return;
+    setLastScroll(now);
+    move(e.deltaY > 0 ? 1 : -1);
   }, [lastScroll, move]);
 
   return (
@@ -52,7 +48,7 @@ export default function WheelGallery() {
         <SectionLabel>— 05 / MOMENTS</SectionLabel>
       </div>
 
-      <div className={styles.stage}>
+      <div className={styles.stage} onWheel={handleWheel}>
         <div className={styles.carouselTrack}>
           {imgUrls.map((url, i) => {
             const cardRotation = (i - currentIndex) * ANGLE_STEP;

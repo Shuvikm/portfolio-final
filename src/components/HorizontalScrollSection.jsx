@@ -60,22 +60,36 @@ export default function HorizontalScrollSection({
   }, []);
 
   // Sentinel height = viewport height + amount we want to scroll horizontally
-  // We pad by 1 viewport so the section sticks long enough to scroll all cards.
-  const travelDistance = Math.max(0, trackWidth - vh * 0.9);
+  // We apply a speed multiplier so the user doesn't have to scroll as far vertically.
+  const SCROLL_SPEED_MULTIPLIER = 1.75;
+  const horizontalScrollRange = Math.max(0, trackWidth - vh * 0.9);
+  const travelDistance = horizontalScrollRange / SCROLL_SPEED_MULTIPLIER;
   const sentinelHeight = vh + travelDistance;
 
   // ── Scroll handler ───────────────────────────────────────────────────────
   const updateTrack = useCallback(() => {
     if (!sectionRef.current || !trackRef.current) return;
     const rect     = sectionRef.current.getBoundingClientRect();
-    const progress = Math.max(0, Math.min(1, -rect.top / travelDistance));
-    const xOffset  = -(progress * travelDistance);
+    const progress = travelDistance > 0 
+      ? Math.max(0, Math.min(1, -rect.top / travelDistance))
+      : 0;
+    const xOffset  = -(progress * horizontalScrollRange);
     trackRef.current.style.transform = `translate3d(${xOffset}px, 0, 0)`;
     rafRef.current = null;
-  }, [travelDistance]);
+  }, [travelDistance, horizontalScrollRange]);
+
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || isMobile) return;
 
     const onScroll = () => {
       if (!isVisible.current) return;
@@ -87,7 +101,7 @@ export default function HorizontalScrollSection({
       window.removeEventListener('scroll', onScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [prefersReducedMotion, updateTrack]);
+  }, [prefersReducedMotion, isMobile, updateTrack]);
 
   // ── IntersectionObserver: only process scroll when visible ───────────────
   useEffect(() => {
@@ -101,7 +115,7 @@ export default function HorizontalScrollSection({
   }, [prefersReducedMotion]);
 
   // ── Reduced-motion fallback ───────────────────────────────────────────────
-  if (prefersReducedMotion) {
+  if (prefersReducedMotion || isMobile) {
     return (
       <section
         id={id}

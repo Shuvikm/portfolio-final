@@ -104,6 +104,7 @@ export default function ProjectCard({ project }) {
       <div style={{
         flex:      1,
         display:   'flex',
+        flexWrap:  'wrap',
         padding:   'clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
         gap:       'clamp(1.5rem, 4vw, 3rem)',
         transform: 'translateZ(40px)', // pop out more
@@ -115,8 +116,7 @@ export default function ProjectCard({ project }) {
           flexDirection: 'column',
           justifyContent: 'space-between',
           flexShrink:    0,
-          minWidth:      'min(25%, 250px)',
-          maxWidth:      '30%',
+          flex:          '1 1 200px',
         }}>
           {/* Oversized number */}
           <span style={{
@@ -148,7 +148,7 @@ export default function ProjectCard({ project }) {
         {/* Middle: Project Thumbnail */}
         {project.image && (
           <div style={{
-            flex: 1,
+            flex: '1 1 300px',
             height: '100%',
             minHeight: '200px',
             border: '1px solid var(--color-border)',
@@ -174,8 +174,7 @@ export default function ProjectCard({ project }) {
           justifyContent: 'flex-end',
           gap:           '1rem',
           paddingTop:    'clamp(1rem, 2vw, 1.5rem)',
-          minWidth:      'min(30%, 350px)',
-          maxWidth:      '35%',
+          flex:          '1 1 250px',
         }}>
 
           <p style={{

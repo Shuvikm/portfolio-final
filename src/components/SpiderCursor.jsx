@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 // Use a lower particle count for better performance
-const PARTICLE_COUNT = 120;
+const PARTICLE_COUNT = 40;
 const SPIDER_COUNT = 1;
 
 function many(n, f) {
@@ -52,8 +52,9 @@ export default function SpiderCursor() {
     function drawLine(x0, y0, x1, y1) {
       ctx.beginPath();
       ctx.moveTo(x0, y0);
-      many(100, (i) => {
-        i = (i + 1) / 100;
+      // Reduced iterations from 100 to 15 for massive performance gain
+      many(15, (i) => {
+        i = (i + 1) / 15;
         let x = lerp(x0, x1, i);
         let y = lerp(y0, y1, i);
         let k = noise(x / 5 + x0, y / 5 + y0) * 2;
